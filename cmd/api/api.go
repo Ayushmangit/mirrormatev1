@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/Ayushmangit/mirrormatev1/internal/store"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/v5/middleware"
 	"go.uber.org/zap"
@@ -11,11 +12,20 @@ import (
 
 type application struct {
 	config config
+	store  store.Storage
 	logger *zap.SugaredLogger
 }
 
 type config struct {
 	addr string
+	db   dbConfig
+}
+
+type dbConfig struct {
+	dsn             string
+	maxIdleConns    int
+	maxOpenConns    int
+	maxConnIdleTime string
 }
 
 func (app *application) mount() http.Handler {
